@@ -1,0 +1,4 @@
+[submodule "ui-vintagestore"]
+	path = ui-vintagestore
+	url = /Users/budodi/workspace/dev/quarkus/book-store/ui-vintagestore/.git/
+	branch = main
