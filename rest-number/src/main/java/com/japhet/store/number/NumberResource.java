@@ -11,16 +11,30 @@ import javax.ws.rs.core.Response;
 import com.github.javafaker.Faker;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 @Path("/api/numbers")
+@Tag(name = "Number Endpoint")
 public class NumberResource {
 
-	private static final Logger LOGGER = Logger.getLogger(NumberResource.class);
-	
+	private static final Logger LOGGER = Logger.getLogger(
+			NumberResource.class);
+
 	@ConfigProperty(name = "number.separator", defaultValue = "false")
 	boolean separator;
-	
+
+	@Operation(
+			summary = "Generates book numbers",
+			description = "These book numbers have several formats: ISBN, ASIN and EAN")
+	@APIResponse(
+			responseCode = "200", content = @Content(
+					mediaType = MediaType.APPLICATION_JSON, schema = @Schema(
+							implementation = BookNumbers.class)))
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response generateBookNumbers() throws InterruptedException {

@@ -5,33 +5,39 @@ import java.time.Instant;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+@Schema(description = "Several formats of book numbers")
 public class BookNumbers {
 
+	@Schema(required = true)
 	@JsonbProperty("isbn_10")
 	private String isbn10;
-	
+
+	@Schema(required = true)
 	@JsonbProperty("isbn_13")
 	private String isbn13;
 	private String asin;
-	
+
 	@JsonbProperty("ean_8")
 	private String ean8;
-	
+
 	@JsonbProperty("ean_13")
 	private String ean13;
-	
+
 	@JsonbTransient
 	private Instant generationDate;
 
 	public BookNumbers() {
 	}
 
-	public BookNumbers(String isbn10, String isbn13, String asin, String ean8, String ean13, Instant generationDate) {
-		this.isbn10 = isbn10;
-		this.isbn13 = isbn13;
-		this.asin = asin;
-		this.ean8 = ean8;
-		this.ean13 = ean13;
+	public BookNumbers(String isbn10, String isbn13, String asin, String ean8,
+			String ean13, Instant generationDate) {
+		this.isbn10         = isbn10;
+		this.isbn13         = isbn13;
+		this.asin           = asin;
+		this.ean8           = ean8;
+		this.ean13          = ean13;
 		this.generationDate = generationDate;
 	}
 
