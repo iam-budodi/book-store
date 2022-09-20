@@ -35,7 +35,7 @@ public class Book extends PanacheEntity {
 	public Integer yearOfPublication;
 
 	@Column(name = "nb_of_pages")
-	public Integer nbOfPage;
+	public Integer nbOfPages;
 
 	@Min(1)
 	@Max(10)
