@@ -58,5 +58,23 @@ public class Book extends PanacheEntity {
 		int randomBook = new Random().nextInt((int) countBooks);
 		return Book.findAll().page(randomBook, 1).firstResult();
 	}
+	
+	@Override
+	  public String toString() {
+	    return "Book{" +
+	      "id=" + id +
+	      ", title='" + title + '\'' +
+	      ", isbn13='" + isbn13 + '\'' +
+	      ", isbn10='" + isbn10 + '\'' +
+	      ", author='" + author + '\'' +
+	      ", yearOfPublication=" + yearOfPublication +
+	      ", nbOfPages=" + nbOfPages +
+	      ", rank=" + rank +
+	      ", price=" + price +
+	      ", smallImageUrl=" + smallImageUrl +
+	      ", mediumImageUrl=" + mediumImageUrl +
+	      ", description='" + description + '\'' +
+	      '}';
+	  }
 
 }

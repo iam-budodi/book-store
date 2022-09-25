@@ -9,8 +9,8 @@ import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-//import static org.hamcrest.CoreMatchers.is;
-//import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasKey;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import io.quarkus.test.junit.DisabledOnIntegrationTest; 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
 
@@ -64,6 +65,66 @@ public class BookResourceTest {
 
   private static int nbBooks;
   private static String bookId;
+  
+  @Test
+  public void shouldSayPing() {
+    given()
+      .when().get("/api/books/ping")
+      .then()
+      .statusCode(OK.getStatusCode())
+      .body(is("hello"));
+  }
+
+  // tag::adocOpenAPI[]
+  @Test
+  void shouldPingOpenAPI() {
+    given()
+      .header(ACCEPT, APPLICATION_JSON).
+    when()
+      .get("/q/openapi").
+    then()
+      .statusCode(OK.getStatusCode());
+  }
+ 
+  @DisabledOnIntegrationTest
+  @Test
+  void shouldPingSwaggerUI() {
+    given().
+    when()
+      .get("/q/swagger-ui").
+    then()
+      .statusCode(OK.getStatusCode());
+  } 
+  
+  @Test
+  void shouldPingLiveness() {
+    given()
+      .header(ACCEPT, APPLICATION_JSON).
+    when()
+      .get("/q/health/live").
+    then()
+      .statusCode(OK.getStatusCode());
+  }
+
+  @Test
+  void shouldPingReadiness() {
+    given()
+      .header(ACCEPT, APPLICATION_JSON).
+    when()
+      .get("/q/health/ready").
+    then()
+      .statusCode(OK.getStatusCode());
+  }
+  
+  @Test
+  void shouldPingMetrics() {
+    given()
+      .header(ACCEPT, APPLICATION_JSON).
+    when()
+      .get("/q/metrics/application").
+    then()
+      .statusCode(OK.getStatusCode());
+  }
   
   @Test
   public void shouldNotFindDummy() {
@@ -258,70 +319,70 @@ public class BookResourceTest {
     assertEquals(nbBooks, books.size());
   }
   
-//  @Test
-//  @Order(5)
-//  void shouldAddABookUsingProxy() {
-//    Book book = new Book();
-//    book.title = DEFAULT_TITLE;
-//    book.author = DEFAULT_AUTHOR;
-//    book.yearOfPublication = DEFAULT_YEAR_OF_PUBLICATION;
-//    book.nbOfPages = DEFAULT_NB_OF_PAGES;
-//    book.rank = DEFAULT_RANK;
-//    book.price = DEFAULT_PRICE;
-//    book.smallImageUrl = DEFAULT_SMALL_IMAGE_URL;
-//    book.mediumImageUrl = DEFAULT_MEDIUM_IMAGE_URL;
-//    book.description = DEFAULT_DESCRIPTION;
-//
-//    // Persists a new book
-//    String location =
-//      given()
-//        .body(book)
-//        .header(CONTENT_TYPE, APPLICATION_JSON)
-//        .header(ACCEPT, APPLICATION_JSON).
-//        when()
-//        .post("/api/books").
-//        then()
-//        .statusCode(CREATED.getStatusCode())
-//        .extract().header("Location");
-//
-//    // Extracts the Location and stores the book id
-//    assertTrue(location.contains("/api/books"));
-//    String[] segments = location.split("/");
-//    bookId = segments[segments.length - 1];
-//    assertNotNull(bookId);
-//
-//    // Checks the book has been created
-//    given()
-//      .header(ACCEPT, APPLICATION_JSON)
-//      .pathParam("id", bookId).
-//    when()
-//      .get("/api/books/{id}").
-//    then()
-//      .statusCode(OK.getStatusCode())
-//      .header(CONTENT_TYPE, APPLICATION_JSON)
-//      .body("title", Is.is(DEFAULT_TITLE))
-//      .body("$", hasKey("isbn13"))
-//      .body("$", hasKey("isbn10"))
-//      .body("author", Is.is(DEFAULT_AUTHOR))
-//      .body("yearOfPublication", Is.is(DEFAULT_YEAR_OF_PUBLICATION))
-//      .body("nbOfPages", Is.is(DEFAULT_NB_OF_PAGES))
-//      .body("rank", Is.is(DEFAULT_RANK))
-//      .body("smallImageUrl", Is.is(DEFAULT_SMALL_IMAGE_URL.toString()))
-//      .body("mediumImageUrl", Is.is(DEFAULT_MEDIUM_IMAGE_URL.toString()))
-//      .body("description", Is.is(DEFAULT_DESCRIPTION));
-//
-//    // Checks there is an extra book in the database
-//    List<Book> books =
-//      given()
-//        .header(ACCEPT, APPLICATION_JSON).
-//      when()
-//        .get("/api/books").
-//      then()
-//        .statusCode(OK.getStatusCode())
-//        .header(CONTENT_TYPE, APPLICATION_JSON)
-//        .extract().body().as(getBookTypeRef());
-//
-//    assertEquals(nbBooks + 1, books.size());
-//  }
+  @Test
+  @Order(5)
+  void shouldAddABookUsingProxy() {
+    Book book = new Book();
+    book.title = DEFAULT_TITLE;
+    book.author = DEFAULT_AUTHOR;
+    book.yearOfPublication = DEFAULT_YEAR_OF_PUBLICATION;
+    book.nbOfPages = DEFAULT_NB_OF_PAGES;
+    book.rank = DEFAULT_RANK;
+    book.price = DEFAULT_PRICE;
+    book.smallImageUrl = DEFAULT_SMALL_IMAGE_URL;
+    book.mediumImageUrl = DEFAULT_MEDIUM_IMAGE_URL;
+    book.description = DEFAULT_DESCRIPTION;
+
+    // Persists a new book
+    String location =
+      given()
+        .body(book)
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .header(ACCEPT, APPLICATION_JSON).
+        when()
+        .post("/api/books").
+        then()
+        .statusCode(CREATED.getStatusCode())
+        .extract().header("Location");
+
+    // Extracts the Location and stores the book id
+    assertTrue(location.contains("/api/books"));
+    String[] segments = location.split("/");
+    bookId = segments[segments.length - 1];
+    assertNotNull(bookId);
+
+    // Checks the book has been created
+    given()
+      .header(ACCEPT, APPLICATION_JSON)
+      .pathParam("id", bookId).
+    when()
+      .get("/api/books/{id}").
+    then()
+      .statusCode(OK.getStatusCode())
+      .header(CONTENT_TYPE, APPLICATION_JSON)
+      .body("title", Is.is(DEFAULT_TITLE))
+      .body("$", hasKey("isbn13"))
+      .body("$", hasKey("isbn10"))
+      .body("author", Is.is(DEFAULT_AUTHOR))
+      .body("yearOfPublication", Is.is(DEFAULT_YEAR_OF_PUBLICATION))
+      .body("nbOfPages", Is.is(DEFAULT_NB_OF_PAGES))
+      .body("rank", Is.is(DEFAULT_RANK))
+      .body("smallImageUrl", Is.is(DEFAULT_SMALL_IMAGE_URL.toString()))
+      .body("mediumImageUrl", Is.is(DEFAULT_MEDIUM_IMAGE_URL.toString()))
+      .body("description", Is.is(DEFAULT_DESCRIPTION));
+
+    // Checks there is an extra book in the database
+    List<Book> books =
+      given()
+        .header(ACCEPT, APPLICATION_JSON).
+      when()
+        .get("/api/books").
+      then()
+        .statusCode(OK.getStatusCode())
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .extract().body().as(getBookTypeRef());
+
+    assertEquals(nbBooks + 1, books.size());
+  }
 
 }

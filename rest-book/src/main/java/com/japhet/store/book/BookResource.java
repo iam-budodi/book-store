@@ -21,6 +21,9 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -51,6 +54,15 @@ public class BookResource {
 					)
 			)
 	)
+	@Counted(
+			name = "countGetRandomBook",
+			description = "Counts how many times the getRandomBook method has been invoked"
+	)
+	@Timed(
+			name = "timeGetRandomBook",
+			description = "Times how long it takes to invoke the getRandomBook method",
+			unit = MetricUnits.MILLISECONDS
+	)
 	@GET
 	@Path("/random")
 	public Response getRandomBook() {
@@ -69,6 +81,15 @@ public class BookResource {
 			)
 	)
 	@APIResponse(responseCode = "204", description = "No books")
+	@Counted(
+			name = "countGetAllBooks",
+			description = "Counts how many times the getAllBooks method has been invoked"
+	)
+	@Timed(
+			name = "timeGetAllBooks",
+			description = "Times how long it takes to invoke the getAllBooks method",
+			unit = MetricUnits.MILLISECONDS
+	)
 	@GET
 	public Response getAllBooks() {
 		List<Book> books = service.findAllBooks();
@@ -92,6 +113,15 @@ public class BookResource {
 	@APIResponse(
 			responseCode = "404",
 			description = "The book is not found for a given identifier"
+	)
+	@Counted(
+			name = "countGetBook",
+			description = "Counts how many times the getBook method has been invoked"
+	)
+	@Timed(
+			name = "timeGetBook",
+			description = "Times how long it takes to invoke the getBook method",
+			unit = MetricUnits.MILLISECONDS
 	)
 	@GET
 	@Path("/{id}")
@@ -118,6 +148,15 @@ public class BookResource {
 					)
 			)
 	)
+	@Counted(
+			name = "countCreateBook",
+			description = "Counts how many times the createBook method has been invoked"
+	)
+	@Timed(
+			name = "timeCreateBook",
+			description = "Times how long it takes to invoke the createBook method",
+			unit = MetricUnits.MILLISECONDS
+	)
 	@POST
 	public Response createBook(@RequestBody(
 			required = true, content = @Content(
@@ -130,17 +169,29 @@ public class BookResource {
 		UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(
 				Long.toString(book.id)
 		);
-		LOGGER.debug("New book created with URI  " + builder.build().toString());
+		LOGGER.debug(
+				"New book created with URI  " + builder.build().toString()
+		);
 		return Response.created(builder.build()).build();
 	}
 
 	@Operation(summary = "Updates an existing book")
 	@APIResponse(
-			responseCode = "200", description = "The updated book", content = @Content(
+			responseCode = "200", description = "The updated book",
+			content = @Content(
 					mediaType = MediaType.APPLICATION_JSON, schema = @Schema(
 							implementation = Book.class
 					)
 			)
+	)
+	@Counted(
+			name = "countUpdateBook",
+			description = "Counts how many times the updateBook method has been invoked"
+	)
+	@Timed(
+			name = "timeUpdateBook",
+			description = "Times how long it takes to invoke the updateBook method",
+			unit = MetricUnits.MILLISECONDS
 	)
 	@PUT
 	public Response updateBook(@RequestBody(
@@ -154,10 +205,20 @@ public class BookResource {
 		LOGGER.debug("Book updated with new values " + book);
 		return Response.ok(book).build();
 	}
-	
+
 	@Operation(summary = "Deletes an existing book")
 	@APIResponse(
-			responseCode = "204", description = "The book has been successfully deleted"
+			responseCode = "204",
+			description = "The book has been successfully deleted"
+	)  
+	@Counted(
+			name = "countDeleteBook",
+			description = "Counts how many times the deleteBook method has been invoked"
+	)
+	@Timed(
+			name = "timeDeleteBook",
+			description = "Times how long it takes to invoke the deleteBook method",
+			unit = MetricUnits.MILLISECONDS
 	)
 	@DELETE
 	@Path("/{id}")
@@ -168,5 +229,12 @@ public class BookResource {
 		LOGGER.debug("Book deleted with id " + id);
 		return Response.noContent().build();
 	}
-	
+
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/ping")
+	public String hello() {
+		return "hello";
+	}
+
 }
