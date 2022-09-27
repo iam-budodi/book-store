@@ -45,12 +45,13 @@ public class BookService {
 		return book;
 	}
 
+	
 	@SuppressWarnings("unused")
 	private Book fallbackPersistBook(Book book) throws FileNotFoundException {
 		LOGGER.warn("Falling back on persisting book");
-		// book.id = 0L;
-		// book.isbn13 = "to be fixed";
-		// book.isbn10 = "to be fixed";
+		book.id     = 0L;
+		book.isbn13 = "to be fixed";
+		book.isbn10 = "to be fixed";
 		String bookJson = JsonbBuilder.create().toJson(book);
 		try (PrintWriter out = new PrintWriter(
 				"book-" + Instant.now().toEpochMilli() + ".json"

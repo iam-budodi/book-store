@@ -1,10 +1,10 @@
 package com.japhet.store.number;
 
-import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.CoreMatchers.is;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -31,7 +31,7 @@ class NumberResourceTest {
 		.statusCode(OK.getStatusCode())
 				.body("$", hasKey("isbn_10"))
 				.body("$", hasKey("isbn_13"))
-				.body("$", hasKey("asin"))
+//				.body("$", hasKey("asin"))
 				.body("$", hasKey("ean_8"))
 				.body("$", hasKey("ean_13")
 				).body("$", not(hasKey("generationDate")));

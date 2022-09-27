@@ -74,8 +74,7 @@ public class BookResourceTest {
       .statusCode(OK.getStatusCode())
       .body(is("hello"));
   }
-
-  // tag::adocOpenAPI[]
+ 
   @Test
   void shouldPingOpenAPI() {
     given()

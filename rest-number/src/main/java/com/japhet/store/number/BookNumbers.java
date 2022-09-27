@@ -17,7 +17,7 @@ public class BookNumbers {
 	@Schema(required = true)
 	@JsonbProperty("isbn_13")
 	private String isbn13;
-	private String asin;
+//	private String asin;
 
 	@JsonbProperty("ean_8")
 	private String ean8;
@@ -31,11 +31,11 @@ public class BookNumbers {
 	public BookNumbers() {
 	}
 
-	public BookNumbers(String isbn10, String isbn13, String asin, String ean8,
+	public BookNumbers(String isbn10, String isbn13, /*String asin,*/ String ean8,
 			String ean13, Instant generationDate) {
 		this.isbn10         = isbn10;
 		this.isbn13         = isbn13;
-		this.asin           = asin;
+//		this.asin           = asin;
 		this.ean8           = ean8;
 		this.ean13          = ean13;
 		this.generationDate = generationDate;
@@ -57,13 +57,13 @@ public class BookNumbers {
 		this.isbn13 = isbn13;
 	}
 
-	public String getAsin() {
-		return asin;
-	}
-
-	public void setAsin(String asin) {
-		this.asin = asin;
-	}
+//	public String getAsin() {
+//		return asin;
+//	}
+//
+//	public void setAsin(String asin) {
+//		this.asin = asin;
+//	}
 
 	public String getEan8() {
 		return ean8;
