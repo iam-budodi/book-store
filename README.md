@@ -1,8 +1,31 @@
-# book-store Project
+# Book Store
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+A simple app made up of two microservices and a user interface, all monitored by Prometheus.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## Overall Architecture
+
+* BookStore UI: the Angular application allowing you to visually pick up a random book, create/read/delete a book and generate ISBN numbers.
+* Number REST API: Simple HTTP microservice generating ISBN numbers.
+* Book REST API: Allows CRUD operations on Books which are stored in a PostgreSQL database.
+
+![architecture] (/architecture.png)
+
+## Technologies used 
+
+* Quarkus Runtime,
+* Eclipse MicroProfile
+* RESTEasy for REST APIs 
+* JTA and Hibernate ORM with Panache to access relational database 
+* Swagger and OpenAPI for documenting microservices REST endpoints
+* JUnit 5, REST Assured, Hamcrest and TestContainers for testing 
+* Prometheus
+* Docker 
+* Minikube, a lightweight kubernates distribution
+* PostgreSQL
+* Java 17
+* Maven build tool
+* GraalVM for building native executable
+* NodeJS 
 
 ## Running the application in dev mode
 
