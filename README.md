@@ -8,7 +8,7 @@ A simple app made up of two microservices and a user interface, all monitored by
 * Number REST API: Simple HTTP microservice generating ISBN numbers.
 * Book REST API: Allows CRUD operations on Books which are stored in a PostgreSQL database.
 
-![architecture] (architecture.png)
+![architecture] (/architecture.png)
 
 ## Technologies used 
 
